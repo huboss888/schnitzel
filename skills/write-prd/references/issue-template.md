@@ -1,4 +1,4 @@
-# PRD GitHub Issue Template
+# PRD Issue Template
 
 Create one issue per coherent feature or implementation slice. Follow the target repository's issue template and style contract when present; use this reference only as the fallback.
 
@@ -44,12 +44,14 @@ When a feature flag applies, name it and document its owner, evaluation and enfo
 - Documentation or support artifacts are ...
 
 ## Test Scenarios
-- Verify the primary happy path.
+- Verify the primary happy path through the real app.
 - Verify permission, validation, and error handling.
 - Verify contract, data, migration, or integration behavior.
 - When a feature flag applies, verify default, enabled, disabled, evaluation-failure, targeting, staged-rollout, kill-switch, and rollback behavior.
 - Verify rollout, rollback, observability, and support scenarios where applicable.
 - Verify non-regression for preserved behavior.
+- For stateful behavior, verify the actual persisted values, ownership, and absence of unintended records in an isolated fixture; retain sanitized evidence and clean up run-owned data.
+- Follow the project's unit-test policy. Under this collection's default, use real-app and integration/end-to-end recipes; do not require unit tests.
 
 ## Out of Scope
 - List adjacent capabilities, migrations, redesigns, compatibility promises, or operational work that the user explicitly excluded.

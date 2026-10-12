@@ -1,0 +1,6 @@
+interface:
+  display_name: "Publish PR or MR"
+  short_description: "Publish intended changes with verification evidence"
+  default_prompt: "Use $pr to publish these changes with issue references and verification evidence."
+policy:
+  allow_implicit_invocation: false

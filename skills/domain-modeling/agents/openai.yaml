@@ -1,0 +1,6 @@
+interface:
+  display_name: "Domain Modeling"
+  short_description: "Resolve terms and maintain a compact glossary"
+  default_prompt: "Use $domain-modeling to resolve project terminology and update the local glossary."
+policy:
+  allow_implicit_invocation: false

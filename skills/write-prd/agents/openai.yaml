@@ -1,7 +1,7 @@
 interface:
   display_name: "Write PRD"
-  short_description: "Create decision-complete PRD issues"
-  default_prompt: "Use $write-prd to resolve the feature decisions and create a repository-compatible PRD issue."
+  short_description: "Capture PRD decisions and publish tracker issues"
+  default_prompt: "Use $write-prd to resolve feature decisions, update the glossary, and publish a PRD issue to this project's tracker."
 
 policy:
   allow_implicit_invocation: false

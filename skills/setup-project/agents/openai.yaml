@@ -1,0 +1,6 @@
+interface:
+  display_name: "Setup Project"
+  short_description: "Prepare tracker access and project coding guidance"
+  default_prompt: "Use $setup-project to prepare this project's tracker access and coding guidance."
+policy:
+  allow_implicit_invocation: false

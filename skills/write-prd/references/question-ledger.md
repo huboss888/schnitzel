@@ -122,13 +122,14 @@ Use this compact ledger shape during the conversation:
 ### Testing and Acceptance
 
 - Acceptance criteria expressed as observable outcomes.
-- Unit, integration, contract, end-to-end, migration, load, security, accessibility, or manual test scenarios.
+- Verification policy and applicable real-app, integration, contract, end-to-end, migration, load, security, accessibility, or manual scenarios. Under this collection's default, do not require unit tests.
 - Fixtures, seeded data, mocks, or test environments required.
+- Database identity/isolation, run-owned data, persisted-state assertions, retained evidence, and cleanup when stateful behavior is in scope.
 - Explicit non-regression scenarios.
 
 ### Issue Filing
 
-- Target GitHub repository.
+- Tracker provider, host, and target repository/project, including GitLab subgroup paths when present.
 - Title format and repository-specific domain or area prefix, when required.
 - Duplicate issue search terms and result.
 - Available `PRD` label and whether it will be applied.
