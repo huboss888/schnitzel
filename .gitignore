@@ -1,0 +1,8 @@
+# Installed skills are separate from the distributable sources in skills/.
+.agents/skills/
+.claude/skills/
+.codex/skills/
+skills-lock.json
+node_modules/
+.DS_Store
+Thumbs.db
