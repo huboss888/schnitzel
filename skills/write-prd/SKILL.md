@@ -11,7 +11,7 @@ metadata:
 
 ## Goal
 
-Turn a feature request into a complete PRD-backed issue on the project's configured tracker. Work serially in the current conversation. Do not invent material defaults. Every applicable functional and operational decision must be answered by the user, explicitly marked not applicable by the user, or directly determined by an authoritative repository contract before creating the issue.
+Turn a feature request into a complete PRD-backed issue on the project's configured tracker. Work serially in the current conversation. Do not invent material defaults. Before creating the issue, every applicable functional and operational decision is closed in one of the ways the project's coding guidance allows: answered by the user, marked not applicable, determined by an authoritative contract or by evidence, decided by the implementer because it changes nothing that is stored or delivered, or taken provisionally under a delegation. A decision that changes what is stored or delivered and that nothing answers is always the user's.
 
 ## Required References
 
@@ -22,7 +22,7 @@ Read these files before asking PRD questions or writing the issue:
 - The installed `setup-project` dependency's [tracker reference](../setup-project/references/tracker.md) for provider/host resolution and safe operations. Resolve it by name if not installed as a sibling directory. Missing setup/access blocks publication, not independent local PRD work.
 - The installed [domain-modeling](../domain-modeling/SKILL.md) helper, applied inside this invocation as terminology is resolved. Read its guidance rather than requiring a separate human invocation. If it is missing, report the dependency before promising glossary maintenance.
 
-Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Keep the decision ledger in the conversation or scratch artifacts, not as another permanent project doc. Update resolved local terminology through the helper; requirements remain in the issue and harness recipes remain in the verification skill. Do not create empty glossary or ADR files.
+Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Four sections of the coding guidance steer this workflow: **Language** (what the issue is written in), **Boundary** (which failures are the program's to handle), **Decisions** (who may close a row, and which sources may answer one), and **PRD scope** (ledger categories that never apply to this project). When the coding guidance lacks them, apply the original rule: only the user, an explicit not-applicable, or a contract closes a row. Keep the decision ledger in the conversation or scratch artifacts, not as another permanent project doc. Update resolved local terminology through the helper; requirements remain in the issue and harness recipes remain in the verification skill. Do not create empty glossary or ADR files.
 
 ## Operating Rules
 
@@ -36,10 +36,13 @@ Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Keep the deci
 - Inspect the target repository's labels before filing. Apply `PRD` when that label already exists or when the repository contract or user requires it. Do not create labels. If `PRD` is absent and not required, file without it.
 - Follow repository-required issue metadata. Do not add unrelated labels, assignees, milestones, project fields, issue types, or other metadata without an explicit user request or repository requirement. If required metadata cannot be applied, report the conflict and do not file.
 - Ask questions in small batches. Prefer grouped, concrete questions that close decision-ledger rows.
-- Do not close a ledger row with an inferred default, common practice, or agent preference. A row closes only through an explicit user answer, explicit user-approved `not applicable`, or an authoritative contract that directly determines the answer.
+- Do not close a ledger row with common practice or agent preference when it changes what is stored or delivered. Such a row closes only through an explicit user answer, an explicit `not applicable`, an authoritative contract or cited evidence that directly determines the answer, or, where the Decisions section allows it, a provisional choice marked "to confirm".
+- A row that changes only how the screen looks or behaves is `implementer-decided`: choose, state the choice in the issue, and do not ask. Apply the Decisions test literally; when unsure which side a row falls on, it is the user's.
+- Skip every category the PRD scope section lists, citing its recorded reason once. When the user marks a whole category not applicable for a reason that is true of the project rather than of this feature, add it to that section so it is not asked again.
+- Apply the Boundary section to the failure rows: ask about invalid input and about broken data observed in the real data; do not turn environment failures into requirements unless the project records them as common.
 - If a repository contract determines a row, cite the path or command evidence in the ledger and ask the user only when product intent remains open.
 - If the user asks to skip a category, record it as explicitly out of scope or not applicable with the user's stated reason.
-- Do not create the issue while any applicable ledger row remains open.
+- Do not create the issue while any applicable ledger row remains open. A `provisional` row is not open, but the issue lists it under "To confirm" with the choice taken and what overturning it would cost.
 - Follow the coding policy's verification approach. Under this collection's default, acceptance criteria require real-app, integration/end-to-end, failure-path, and persisted-state evidence; do not add unit-test requirements. Mark database checks not applicable only when the feature has no relevant persisted state.
 
 ## Workflow
@@ -47,11 +50,12 @@ Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Keep the deci
 1. Ground the request.
    - Identify the feature idea, affected product or domain, likely repository contracts, and issue target.
    - Read applicable docs, schemas, interfaces, existing issues, nearby code, and issue templates needed to avoid asking discoverable questions.
+   - Gather the evidence the Decisions section names before asking anything: run the reference implementation on the feature when one exists, and query the real data for the cases the feature must handle. For a port or a rewrite, most open points surface here, not in an interview. Record what could not be run and why.
    - Determine feature-flag applicability and initialize a visible decision ledger using `references/question-ledger.md`. Read the glossary; identify terms that need resolution without starting a redundant interview.
 
 2. Collect decisions.
    - Ask only questions that materially close open ledger rows.
-   - Keep asking until every applicable row is answered, explicitly not applicable, or contract-determined.
+   - Keep asking until every applicable row is answered, explicitly not applicable, contract-determined, implementer-decided, or provisional.
    - After each user answer, update the ledger and capture resolved domain terms locally through `domain-modeling`. If applicable rows remain open, perform any needed read-only investigation and ask the next small batch of questions in the same turn; do not wait for a separate request to continue.
    - Reconcile contradictions immediately and track evidence, open questions, and user answers separately. Partial or ambiguous answers leave the affected decisions open and require follow-up questions, not inferred defaults.
    - While applicable rows remain open, do not end with only a progress summary, draft, or final plan, ask whether to continue, or request a mode switch to continue collecting decisions. Pair progress summaries with the next questions using the available question mechanism.

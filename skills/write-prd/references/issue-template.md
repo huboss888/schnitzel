@@ -53,8 +53,18 @@ When a feature flag applies, name it and document its owner, evaluation and enfo
 - For stateful behavior, verify the actual persisted values, ownership, and absence of unintended records in an isolated fixture; retain sanitized evidence and clean up run-owned data.
 - Follow the project's unit-test policy. Under this collection's default, use real-app and integration/end-to-end recipes; do not require unit tests.
 
+## Decided by the implementer
+- Choices that change only how the screen looks or behaves, one line each. Omit the section when there are none.
+
+## To confirm
+- Provisional choices: what was chosen, who confirms, and what overturning it would cost. Omit the section when there are none.
+
+## Known data problems
+- Breakage observed in the real data that this feature meets, with counts, and what the program does with it. Omit the section when there are none.
+
 ## Out of Scope
 - List adjacent capabilities, migrations, redesigns, compatibility promises, or operational work that the user explicitly excluded.
+- Environment failures left to the user under the project's Boundary section, one line each.
 ```
 
 Append `## Additional Notes` only when useful context does not fit the required sections.
@@ -63,7 +73,8 @@ Append `## Additional Notes` only when useful context does not fit the required 
 
 Before filing, verify:
 
-- Every applicable decision-ledger row is closed without inferred material defaults.
+- Every applicable decision-ledger row is closed without inferred material defaults; implementer-decided and provisional rows appear in their sections.
+- The issue is written in the language the project's coding guidance records.
 - The title and body follow the target repository's contracts, or the fallback above when none exist.
 - Acceptance criteria and test scenarios are concrete enough for implementation and QA.
 - Out-of-scope decisions are explicit.

@@ -33,11 +33,19 @@ Use [assets/coding.md](assets/coding.md) as the starting policy for `docs/agents
 
 The default policy forbids creating or running unit tests. Verification uses actual user paths, integration/end-to-end checks, and persisted side effects. Existing lint, typecheck, and build commands may be used; inspect aggregate commands before running them because they may include unit tests. Preserve existing test files and CI configuration.
 
+Three sections of the template describe this project rather than the collection, so settle them with the user in one small batch instead of leaving the defaults unexamined:
+
+- **Language:** which language people read and which language agents and tools read. The default is Traditional Chinese for people and English for agents.
+- **Boundary:** who uses the program. The default is an internal tool for a small, known group of trained users, which leaves environment failures to the user and broken incoming data to its owner.
+- **Decisions:** which sources may answer an open point without asking: a specification, a production data snapshot, a legacy program, or none.
+
+Leave **PRD scope** empty on a first run. It fills in as real features mark ledger categories not applicable. When guidance, a glossary, or decisions already live in another repository, record that path in the Documentation section and do not create a local copy.
+
 Add one compact managed block to `AGENTS.md`, updating it in place on repeat runs:
 
 ```markdown
 <!-- schnitzel:start -->
-- For planning, implementation, publication, and review, read `docs/agents/coding.md`.
+- For planning, implementation, publication, and review, read `docs/agents/coding.md`: language, boundary, who decides what, and where each document lives.
 - Read `GLOSSARY.md` when it exists and use its domain terms.
 - For real-app verification, read the project-local `verify-<app>/SKILL.md` and its feature map when available.
 <!-- schnitzel:end -->

@@ -5,10 +5,13 @@ Use this ledger to force explicit decisions before writing or filing the PRD iss
 ## Ledger Rules
 
 - Keep a row for every applicable category below.
-- Mark each row as `open`, `answered`, `not applicable`, or `contract-determined`.
+- Mark each row as `open`, `answered`, `not applicable`, `contract-determined`, `implementer-decided`, or `provisional`.
 - Do not infer material product or implementation intent from general best practices.
 - For `contract-determined` rows, record the source path, issue, command output, or API/schema evidence.
-- For `not applicable` rows, record the user's explicit reason.
+- For `not applicable` rows, record the user's explicit reason, or the reason recorded in the project's PRD scope section. A category listed there is skipped whole, in one row.
+- `implementer-decided` is only for a row that changes nothing stored or delivered. Record the choice made.
+- `provisional` is only for a row the project's Decisions section lets proceed without an answer. Record the choice, who is to confirm it, and what overturning it would cost.
+- Evidence from the reference implementation or the real data counts as `contract-determined` when the Decisions section names that source. Record the command or query and what it showed.
 - Decide whether a feature flag applies from an explicit user decision or repository contract.
 - Allow all Feature Flag and Rollout rows to be marked `not applicable` when the user explicitly states that no flag is needed and gives a reason, unless a repository contract requires one.
 - When a feature flag applies, keep its detailed rows open until every required decision is answered or contract-determined.
