@@ -21,14 +21,17 @@ Publish intended changes from the current checkout. Read `AGENTS.md`, coding gui
 
 ## Write
 
-Follow the repository's template and title conventions first. Otherwise use a concise title covering the full change and this compact body:
+Write the title and body in the reading language the project's coding guidance records; identifiers, paths, and commands stay as they are. Follow the repository's template and title conventions first. Otherwise use a concise title covering the full change and this compact body:
 
 ```markdown
 ## Summary
 Concrete problem and resulting behavior. Add a small diagram or diff sketch only when it clarifies the change.
 
 ## Evidence
-Issue acceptance criteria exercised, verified revision, fixture, and real before/after results. List failed, blocked, or unverified criteria separately.
+Issue acceptance criteria exercised, verified revision, fixture, and real before/after results. List failed, blocked, or unverified criteria separately. "Unverified" covers requirements and normal use; environment failures the project leaves to its users are not listed as gaps.
+
+## Data problems seen
+Breakage observed in the real data during this work, with counts, and what the program does with it. Omit when there is none.
 
 ## Merge risk
 Affected existing flows and any hard-to-reverse migration or operational step; how to roll back when known.
