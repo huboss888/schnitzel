@@ -78,7 +78,7 @@ Before filing, verify:
 - The title and body follow the target repository's contracts, or the fallback above when none exist.
 - Acceptance criteria and test scenarios are concrete enough for implementation and QA.
 - Out-of-scope decisions are explicit.
-- Feature Flag and Rollout rows are complete when a flag applies or explicitly marked `not applicable` with the user's reason when no repository contract requires one.
+- When the Feature Flag and Rollout category is in scope, its rows are complete when a flag applies or explicitly marked `not applicable` with the user's reason when no repository contract requires one.
 - Any feature flag supplements rather than replaces authorization, tenancy, billing, budget, resource-state, and safety enforcement.
 - Repository labels were inspected. `PRD` will be applied only when it exists or is explicitly required, and the skill will not create it.
 - Other metadata will be applied only when the user explicitly requested it or the repository requires it.

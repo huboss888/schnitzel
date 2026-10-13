@@ -23,7 +23,7 @@ node <absolute-skill-path>/scripts/check-project.mjs --cwd <project-path>
 node <absolute-skill-path>/scripts/check-project.mjs --cwd <project-path> --remote origin --provider gitlab
 ```
 
-The JSON reports the selected host/project, CLI availability, authentication, and repository-read access without printing credentials or CLI responses. `--offline` checks local facts only. A successful read does not prove issue/MR write permissions. Provider overrides are for a confirmed self-hosted GitHub or GitLab instance, not guesses based on its hostname.
+The JSON reports the selected host/project, CLI availability, authentication, and repository-read access without printing credentials or CLI responses. A self-hosted host cannot be recognised from its name: the first form reports `requires-explicit-selection`, and the second, with the confirmed provider, is the one to run. `--offline` checks local facts only. A successful read does not prove issue/MR write permissions. Provider overrides are for a confirmed self-hosted GitHub or GitLab instance, not guesses based on its hostname.
 
 If Node, Git, the selected CLI, authentication, or access is missing, report the precise prerequisite. Use official installation instructions for the current OS and the selected host's CLI login flow within the user's setup authorization. Human/browser authentication stays with the user; do not request tokens in chat or put them in project files. Rerun the helper after setup. Do not create a test issue or PR to check access. For a project without a remote, establish local guidance and state that issue publication is unavailable until a target is configured.
 
@@ -39,7 +39,7 @@ Three sections of the template describe this project rather than the collection,
 - **Boundary:** who uses the program. The default is an internal tool for a small, known group of trained users, which leaves environment failures to the user and broken incoming data to its owner.
 - **Decisions:** which sources may answer an open point without asking: a specification, a production data snapshot, a legacy program, or none.
 
-Leave **PRD scope** empty on a first run. It fills in as real features mark ledger categories not applicable. When guidance, a glossary, or decisions already live in another repository, record that path in the Documentation section and do not create a local copy.
+**PRD scope** lists the optional decision-ledger categories that apply; the default is none, which fits an internal tool with no accounts, external services, staged rollout, or servers to operate. List one whenever the project evidently has what it covers, whether that is known at setup or learned later. When guidance, a glossary, or decisions already live in another repository, record that path in the Documentation section and do not create a local copy.
 
 Add one compact managed block to `AGENTS.md`, updating it in place on repeat runs:
 

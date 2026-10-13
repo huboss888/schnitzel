@@ -84,7 +84,7 @@ The defaults assume an internal program with a small, known group of trained use
 | Boundary | A failure is a program defect, a user-environment case, or broken existing data. Only the first is a requirement, a verification target, or a review finding by default. | `write-prd`, the verification skills, `review`, `pr` |
 | Decisions | A point that changes nothing stored or delivered is the implementer's. One that does is answered by a contract, by evidence, by a provisional choice the owner has delegated, or by the user. | `write-prd` |
 
-`write-prd` also skips the decision-ledger categories a project records under **PRD scope** as never applicable to it. A point that waits for someone outside the conversation is filed as its own issue; there is no permanent decision log.
+The decision ledger of `write-prd` has core categories, asked for every feature, and optional ones (security and compliance, integrations, feature flags, operations, observability, scale and concurrency), asked only when the project lists them under **PRD scope**. The default lists none. A point that waits for someone outside the conversation is filed as its own issue; there is no permanent decision log.
 
 ## Install dependencies together
 

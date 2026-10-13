@@ -36,7 +36,11 @@ A point that waits for someone outside the conversation is filed as an issue of 
 
 ## PRD scope
 
-Record here the decision-ledger categories that never apply to this project, with one reason each (for example: no accounts, so no authentication or tenancy; no external services; no staged rollout). `write-prd` skips them without asking. Leave this section empty until a category has been marked not applicable for a real feature.
+`write-prd` asks the core categories of its decision ledger for every feature. Its optional categories are asked only when listed here: Security, Privacy, and Compliance; Integrations; Feature Flag and Rollout; Operations; Observability; Scale and Concurrency.
+
+Optional categories that apply to this project: none.
+
+List a category when the project has what it is about (accounts or personal data, an external service, staged rollout, a server or worker to operate, metrics and alerts, concurrent users or heavy load). Add one as soon as there is a reason to; no feature has to have run into it first.
 
 ## Implementation
 

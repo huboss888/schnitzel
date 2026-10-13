@@ -4,17 +4,15 @@ Use this ledger to force explicit decisions before writing or filing the PRD iss
 
 ## Ledger Rules
 
-- Keep a row for every applicable category below.
+- Keep a row for every category in scope: all **core categories**, plus each **optional category** the project's coding guidance lists under PRD scope. An optional category that is not listed there is out of scope and gets no rows; do not ask about it.
+- When a feature plainly needs an optional category the project has not listed (it adds a login, calls an external service, ships behind a flag), say so, open that category for this feature, and suggest adding it to the project's PRD scope.
 - Mark each row as `open`, `answered`, `not applicable`, `contract-determined`, `implementer-decided`, or `provisional`.
 - Do not infer material product or implementation intent from general best practices.
 - For `contract-determined` rows, record the source path, issue, command output, or API/schema evidence.
-- For `not applicable` rows, record the user's explicit reason, or the reason recorded in the project's PRD scope section. A category listed there is skipped whole, in one row.
+- For `not applicable` rows, record the user's explicit reason.
 - `implementer-decided` is only for a row that changes nothing stored or delivered. Record the choice made.
 - `provisional` is only for a row the project's Decisions section lets proceed without an answer. Record the choice, who is to confirm it, and what overturning it would cost.
 - Evidence from the reference implementation or the real data counts as `contract-determined` when the Decisions section names that source. Record the command or query and what it showed.
-- Decide whether a feature flag applies from an explicit user decision or repository contract.
-- Allow all Feature Flag and Rollout rows to be marked `not applicable` when the user explicitly states that no flag is needed and gives a reason, unless a repository contract requires one.
-- When a feature flag applies, keep its detailed rows open until every required decision is answered or contract-determined.
 - If the feature crosses multiple products, services, users, or rollout paths, duplicate the relevant rows per affected area.
 
 Use this compact ledger shape during the conversation:
@@ -25,7 +23,9 @@ Use this compact ledger shape during the conversation:
 | Goal | open |  |  |
 ```
 
-## Required Categories
+## Core Categories
+
+Asked for every feature.
 
 ### Product Intent
 
@@ -52,12 +52,11 @@ Use this compact ledger shape during the conversation:
 - Accessibility and localization requirements.
 - Mobile, desktop, CLI, API, or operator-surface requirements.
 
-### API and Contracts
+### Contracts
 
-- Public interfaces: RPCs, REST endpoints, CLI flags, routes, events, headers, streams, files, or webhooks.
-- Request, response, stream, and error shapes.
+- Public interfaces: RPCs, REST endpoints, CLI flags, routes, events, headers, streams, files, or exchange formats.
+- Request, response, stream, file, and error shapes.
 - Identifier formats and externally visible references.
-- Authorization and tenancy boundaries in each interface.
 - Backward compatibility, breaking-change intent, and client migration expectations.
 - Contract documentation that must change.
 
@@ -65,13 +64,45 @@ Use this compact ledger shape during the conversation:
 
 - Data model, persistence, retention, deletion, and archival decisions.
 - Source of truth and ownership boundaries.
-- Read models, caches, denormalized state, and invalidation behavior.
-- Idempotency, concurrency, ordering, replay, and retry semantics.
 - Import/export, backfill, migration, and rollback data handling.
+
+### Edge Cases and Failure Modes
+
+Apply the Boundary section of the project's coding guidance before asking.
+
+- Validation failures and malformed input.
+- Partial success, cancellation, duplicate submission, and stale state.
+- Broken existing data this feature meets, as observed in the real data.
+- Environment failures, only those the project records as common in real use.
+
+### Documentation and Support
+
+- Repository docs, project docs, API docs, user docs, changelog, or release notes to update.
+- Support scripts, admin tooling, FAQ, or troubleshooting notes.
+
+### Testing and Acceptance
+
+- Acceptance criteria expressed as observable outcomes.
+- Verification policy and applicable real-app, integration, contract, end-to-end, migration, or manual scenarios. Under this collection's default, do not require unit tests.
+- Fixtures, seeded data, mocks, or test environments required.
+- Database identity/isolation, run-owned data, persisted-state assertions, retained evidence, and cleanup when stateful behavior is in scope.
+- Explicit non-regression scenarios.
+
+### Issue Filing
+
+- Tracker provider, host, and target repository/project, including GitLab subgroup paths when present.
+- Title format and repository-specific domain or area prefix, when required.
+- Duplicate issue search terms and result.
+- Available `PRD` label and whether it will be applied.
+- Other metadata explicitly requested by the user or required by the repository, with evidence.
+
+## Optional Categories
+
+Asked only when the project's coding guidance lists the category under PRD scope, or when this feature plainly needs it.
 
 ### Security, Privacy, and Compliance
 
-- Authentication and authorization rules.
+- Authentication and authorization rules, in each interface the feature touches.
 - Tenant, organization, workspace, project, account, or user isolation.
 - Secret, token, credential, and key handling.
 - Personal or sensitive data, audit, privacy, retention, and deletion requirements.
@@ -87,6 +118,8 @@ Use this compact ledger shape during the conversation:
 
 ### Feature Flag and Rollout
 
+Decide whether a flag applies from an explicit user decision or repository contract. The user may mark every row not applicable by stating that no flag is needed and why, unless a repository contract requires one. When a flag applies, keep its rows open until each is answered or contract-determined.
+
 - Feature-flag applicability: whether a feature flag is in scope, with the explicit user reason or repository-contract evidence.
 - Feature-flag contract, when applicable: flag key, owning system, evaluation and enforcement surfaces, and every gated entry point or execution path.
 - Default, disabled, and evaluation-failure behavior, when applicable: initial state, preserved baseline behavior, failure handling, and confirmation that authorization, tenancy, billing, budget, resource state, and safety checks remain independently enforced.
@@ -101,6 +134,7 @@ Use this compact ledger shape during the conversation:
 - SLOs, latency, throughput, capacity, cost, and scaling expectations.
 - Runbooks, operator actions, support workflows, and escalation paths.
 - Backward and forward compatibility during deploy and rollback.
+- Training or migration communication needed for users or operators.
 
 ### Observability
 
@@ -109,31 +143,10 @@ Use this compact ledger shape during the conversation:
 - Error classification and alert thresholds.
 - Debug identifiers that must appear in logs or user/operator views.
 
-### Edge Cases and Failure Modes
+### Scale and Concurrency
 
-- Validation failures and malformed input.
-- Partial success, timeout, cancellation, duplicate submission, stale state, and race conditions.
-- Offline, degraded dependency, rate limit, permission change, and deleted-resource behavior.
+- Read models, caches, denormalized state, and invalidation behavior.
+- Idempotency, concurrency, ordering, replay, and retry semantics.
+- Timeouts, race conditions, offline or degraded dependencies, and rate limits.
 - Multi-tenant, cross-boundary, cross-region, or high-volume edge cases.
-
-### Documentation and Support
-
-- Repository docs, project docs, API docs, user docs, changelog, or release notes to update.
-- Support scripts, admin tooling, FAQ, or troubleshooting notes.
-- Training or migration communication needed for users or operators.
-
-### Testing and Acceptance
-
-- Acceptance criteria expressed as observable outcomes.
-- Verification policy and applicable real-app, integration, contract, end-to-end, migration, load, security, accessibility, or manual scenarios. Under this collection's default, do not require unit tests.
-- Fixtures, seeded data, mocks, or test environments required.
-- Database identity/isolation, run-owned data, persisted-state assertions, retained evidence, and cleanup when stateful behavior is in scope.
-- Explicit non-regression scenarios.
-
-### Issue Filing
-
-- Tracker provider, host, and target repository/project, including GitLab subgroup paths when present.
-- Title format and repository-specific domain or area prefix, when required.
-- Duplicate issue search terms and result.
-- Available `PRD` label and whether it will be applied.
-- Other metadata explicitly requested by the user or required by the repository, with evidence.
+- Load, security, or accessibility test scenarios beyond the core verification.
