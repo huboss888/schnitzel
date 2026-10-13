@@ -66,12 +66,25 @@ The default project policy forbids creating or running unit tests. Prove issue a
 | Artifact | Owns |
 | --- | --- |
 | `AGENTS.md` | Short pointers to the applicable guidance. |
-| `docs/agents/coding.md` | Tracker, implementation, verification policy, and publication/review rules. |
-| `GLOSSARY.md` | Resolved domain terminology, created only when needed. |
+| `docs/agents/coding.md` | Tracker, language, boundary, who decides what, verification policy, and publication/review rules. |
+| `GLOSSARY.md` | Resolved domain terminology, created only when needed. Written for people, in the project's reading language, each term with the name the code uses. |
+| `docs/adr/` | The few decisions that are hard to reverse, surprising, and the result of a real trade-off. |
 | Project-local `verify-<app>/SKILL.md` | Launch, database identity, fixtures, driving tools, evidence, and cleanup. |
 | Its `feature-map.md` | Compact recipes for critical and changed user flows. Split only when cumbersome. |
 
 The issue owns change requirements. The glossary defines terms. The feature map explains how to exercise behavior. Common setup stays in the verification entrypoint; there is no duplicate `harness.md`. Database writes prepare fixtures only in an established isolated local instance; feature mutations go through the app and database reads confirm persisted effects.
+
+## Built for internal tools
+
+The defaults assume an internal program with a small, known group of trained users, written up for readers of Traditional Chinese. Three sections of the generated `docs/agents/coding.md` carry that, and a project changes them there, not in the skills:
+
+| Section | Default | Used by |
+| --- | --- | --- |
+| Language | Traditional Chinese for what people read (issues, PR/MR, reviews, glossary, ADRs); English for what agents and tools read. | every skill that writes |
+| Boundary | A failure is a program defect, a user-environment case, or broken existing data. Only the first is a requirement, a verification target, or a review finding by default. | `write-prd`, the verification skills, `review`, `pr` |
+| Decisions | A point that changes nothing stored or delivered is the implementer's. One that does is answered by a contract, by evidence, by a provisional choice the owner has delegated, or by the user. | `write-prd` |
+
+`write-prd` also skips the decision-ledger categories a project records under **PRD scope** as never applicable to it. A point that waits for someone outside the conversation is filed as its own issue; there is no permanent decision log.
 
 ## Install dependencies together
 
