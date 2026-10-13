@@ -34,6 +34,8 @@ All three of these must be true:
 2. **Surprising without context**: a future reader will look at the code and wonder "why on earth did they do it this way?"
 3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
 
+A point that is still waiting for an answer is not an ADR. It lives in an issue until it is settled, and becomes an ADR only if it then passes this test; otherwise the closed issue is its record.
+
 If a decision is easy to reverse, skip it: you'll just reverse it. If it's not surprising, nobody will wonder why. If there was no real alternative, there's nothing to record beyond "we did the obvious thing."
 
 ### What qualifies

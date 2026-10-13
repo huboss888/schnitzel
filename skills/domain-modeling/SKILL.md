@@ -12,7 +12,7 @@ metadata:
 
 Sharpen domain language during the requested design conversation. This helper may be read and applied by `write-prd`; it does not start a separate interview or publish anything.
 
-Read the root `GLOSSARY.md` when present. Respect an existing `GLOSSARY-MAP.md` and work only in the relevant context. Start with one root glossary for a new small project and create it only after a term is resolved.
+Read the root `GLOSSARY.md` when present. Write the glossary and ADRs in the reading language the project's coding guidance records. When that guidance says the glossary or the ADRs live in another repository, read them there and do not create a local copy; hand the resolved terms back to the calling workflow with the path they belong in. Respect an existing `GLOSSARY-MAP.md` and work only in the relevant context. Start with one root glossary for a new small project and create it only after a term is resolved.
 
 When language conflicts with an existing definition, surface the conflict. For overloaded terms, propose a canonical term and distinguish the concepts it covers. Use concrete scenarios and nearby code to expose unclear relationships. Existing code is evidence of current behavior, not authority to invent the user's desired behavior.
 

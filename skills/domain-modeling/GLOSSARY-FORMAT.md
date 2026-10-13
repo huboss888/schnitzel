@@ -22,6 +22,16 @@ A person or organization that places orders.
 _Avoid_: Client, buyer, account
 ```
 
+When the project's reading language is not the language of its code, head each term with its name in the reading language followed by the name the code uses, and write the definition in the reading language:
+
+```md
+**工作階段 (work stage)**:
+一個安檢專案之下、在一段期間內對若干隧道進行的一次檢測。
+_Avoid_: 子專案, stage, phase
+```
+
+The name in parentheses is the one identifiers, file names, and agent-facing documents use. Pick it once; a second spelling of it goes under `_Avoid_` like any other synonym.
+
 ## Rules
 
 - **Be opinionated.** When multiple words exist for the same concept, pick the best one and list the others under `_Avoid_`.
