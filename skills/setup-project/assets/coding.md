@@ -47,6 +47,7 @@ List a category when the project has what it is about (accounts or personal data
 - Implement the issue's agreed scope. Record unresolved decisions instead of inventing requirements.
 - Read `GLOSSARY.md` when present and use its terms. Maintain resolved terminology through `domain-modeling`; keep implementation details in the issue and code.
 - Preserve unrelated changes. Work serially in the current checkout unless the user requests another execution model.
+- Some rules are stated in one file of the code and nowhere else (generated limits, a layout table, a list of what goes where). Name those files here, one line each, with what they decide. Point to them; never restate their content in a document.
 
 ## Verification
 
