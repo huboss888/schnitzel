@@ -1,0 +1,6 @@
+interface:
+  display_name: "Feature Walkthrough"
+  short_description: "Show a program feature step by step with screenshots"
+  default_prompt: "Use $feature-walkthrough to show how this feature is used, one screenshot per step."
+policy:
+  allow_implicit_invocation: false

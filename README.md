@@ -32,6 +32,7 @@ The installer handles your selected agents' skill locations. CLI authentication,
 | [pr](skills/pr/SKILL.md) | Publish or update a PR/MR with issue references and real evidence. | Adapted from [Matt's pr](https://github.com/mattpocock/skills/tree/main/skills/engineering/pr) |
 | [review](skills/review/SKILL.md) | Review requirements, standards, and verification evidence in chat. | Adapted from [Matt's code-review](https://github.com/mattpocock/skills/tree/main/skills/engineering/code-review) |
 | [retro](skills/retro/SKILL.md) | Suggest improvements to the agent's working environment. | Adapted from [Matt Pocock](https://github.com/mattpocock/skills) |
+| [feature-walkthrough](skills/feature-walkthrough/SKILL.md) | Show how a program feature is used, a screenshot per step, as one HTML page. Needs Node. | Original |
 
 ## Expected workflow
 
