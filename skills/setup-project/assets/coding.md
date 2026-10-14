@@ -46,6 +46,7 @@ List a category when the project has what it is about (accounts or personal data
 
 - Implement the issue's agreed scope. Record unresolved decisions instead of inventing requirements.
 - Read `GLOSSARY.md` when present and use its terms. Maintain resolved terminology through `domain-modeling`; keep implementation details in the issue and code.
+- Write no comment that restates what the code does or narrates the change. Comment only where someone editing the line would otherwise undo it: a workaround or an outside constraint, in one line, linking the issue or ADR that holds the reasoning and what would let it be removed. Agents copy nearby comments, so delete stale or redundant ones in code you touch.
 - Preserve unrelated changes. Work serially in the current checkout unless the user requests another execution model.
 - Some rules are stated in one file of the code and nowhere else (generated limits, a layout table, a list of what goes where). Name those files here, one line each, with what they decide. Point to them; never restate their content in a document.
 
