@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
-import { statSync } from 'node:fs';
+import { realpathSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 // Read-only checks. Never forward CLI output: auth diagnostics may contain secrets.
@@ -155,7 +155,17 @@ function main(argv) {
   process.exitCode = report.status === 'blocked' ? 1 : 0;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Compare real paths: Node resolves symlinks/junctions for import.meta.url but not for argv[1].
+function isEntryPoint() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(resolve(process.argv[1])) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) {
   try {
     main(process.argv.slice(2));
   } catch (error) {
