@@ -16,11 +16,18 @@ Use the selected host's authenticated CLI and inspect its installed `--help` bef
 | Request metadata | `gh pr view <number> --repo <host/owner/repo>` | `glab mr view <iid> --repo <project-URL>` |
 | Request diff | `gh pr diff <number> --repo <host/owner/repo>` | `glab mr diff <iid> --repo <project-URL>` |
 
+Creating a workflow label, only within `setup-project`. GitHub takes the colour without `#`; GitLab takes it with `#`. Never pass `--force` to `gh`: it overwrites an existing label.
+
+```text
+gh label create <name> --repo <host/owner/repo> --color <RRGGBB> --description <text>
+glab label create --repo <project-URL> --name <name> --color <#RRGGBB> --description <text>
+```
+
 For GitLab APIs, encode the entire namespace/project path as one segment, including every slash. Preserve subgroup paths. On self-hosted servers, select the confirmed API host explicitly. For an issue/MR IID, always pair it with its project; a bare number is not globally unique. Check pagination when searching existing objects.
 
 ## Multiline writes
 
-Prepare the exact Markdown in a temporary UTF-8 file outside tracked source. Pass argument arrays or properly quoted shell arguments, never an interpolated body. Current CLIs support these shapes; check local help first:
+Prepare the exact Markdown in a UTF-8 file under `.scratch/`, outside tracked source. Pass argument arrays or properly quoted shell arguments, never an interpolated body. Current CLIs support these shapes; check local help first:
 
 ```text
 gh issue create --repo <host/owner/repo> --title <title> --body-file <file>
@@ -37,7 +44,7 @@ For fork publication, resolve the actual head project and use the host's support
 
 If the installed CLI lacks a body-file flag, use its documented structured API with a serializer and input file, after confirming that API's fields. Do not replace a missing flag with fragile multiline shell interpolation. For review posting, use `gh pr review` for a requested GitHub review or `glab mr note create` (or the installed version's equivalent) for a requested GitLab discussion comment, with the supported body/input option. Preserve the requested comment/review scope and approval state.
 
-Before creation, check for duplicates or a prior result. After creation/update, read back the URL, project, content, state, and revision. On a timeout or ambiguous response, reconcile remote state before another write. Retry once only when absence and a correctable cause are established; report uncertainty when they are not. Do not automatically create labels, assign people, merge, or enable auto-merge.
+Before creation, check for duplicates or a prior result. After creation/update, read back the URL, project, content, state, and revision. On a timeout or ambiguous response, reconcile remote state before another write. Retry once only when absence and a correctable cause are established; report uncertainty when they are not. Do not create labels outside `setup-project`, assign people, merge, or enable auto-merge.
 
 Use `Closes #<issue-number>` only for a fully resolved issue in the same project; otherwise use a normal issue link. Cross-project references, target-branch behavior, and GitLab closing patterns are host/project-specific. Verify the actual configuration before promising automatic closure.
 

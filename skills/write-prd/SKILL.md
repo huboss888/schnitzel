@@ -22,7 +22,7 @@ Read these files before asking PRD questions or writing the issue:
 - The installed `setup-project` dependency's [tracker reference](../setup-project/references/tracker.md) for provider/host resolution and safe operations. Resolve it by name if not installed as a sibling directory. Missing setup/access blocks publication, not independent local PRD work.
 - The installed [domain-modeling](../domain-modeling/SKILL.md) helper, applied inside this invocation as terminology is resolved. Read its guidance rather than requiring a separate human invocation. If it is missing, report the dependency before promising glossary maintenance.
 
-Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Four sections of the coding guidance steer this workflow: **Language** (what the issue is written in), **Boundary** (which failures are the program's to handle), **Decisions** (who may close a row, and which sources may answer one), and **PRD scope** (which optional ledger categories apply to this project). When the coding guidance lacks them, apply the original rule: only the user, an explicit not-applicable, or a contract closes a row. Keep the decision ledger in the conversation or scratch artifacts, not as another permanent project doc. Update resolved local terminology through the helper; requirements remain in the issue and harness recipes remain in the verification skill. Do not create empty glossary or ADR files.
+Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Four sections of the coding guidance steer this workflow: **Language** (what the issue is written in), **Boundary** (which failures are the program's to handle), **Decisions** (who may close a row, and which sources may answer one), and **PRD scope** (which optional ledger categories apply to this project). When the coding guidance lacks them, apply the original rule: only the user, an explicit not-applicable, or a contract closes a row. Keep the decision ledger in the conversation or under `.scratch/`, not as another permanent project doc. Update resolved local terminology through the helper; requirements remain in the issue and harness recipes remain in the verification skill. Do not create empty glossary or ADR files.
 
 ## Operating Rules
 
@@ -33,16 +33,17 @@ Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Four sections
 - When a feature flag applies, require its complete contract before finalizing or filing the issue. Treat it only as a rollout control, never as a substitute for authorization, tenancy, billing, budget, resource state, or other safety enforcement.
 - Do not invent a flag key, rollout percentage, cohort, timing, or removal threshold.
 - Use the configured tracker: `gh` for GitHub or `glab` for GitLab, preserving self-hosted hosts and subgroup paths. Verify authentication and project access before publication. A bare issue number is scoped to its project.
-- Inspect the target repository's labels before filing. Apply `PRD` when that label already exists or when the repository contract or user requires it. Do not create labels. If `PRD` is absent and not required, file without it.
+- Inspect the target repository's labels before filing. The Tracker section of the coding guidance names the workflow labels (default `prd` for a PRD issue, `needs-decision` for a waiting point); use them as spelled there. Apply each when it exists. Do not create labels; `setup-project` does. If one is absent, file without it and say that repeating setup creates it.
 - Follow repository-required issue metadata. Do not add unrelated labels, assignees, milestones, project fields, issue types, or other metadata without an explicit user request or repository requirement. If required metadata cannot be applied, report the conflict and do not file.
 - Ask questions in small batches. Prefer grouped, concrete questions that close decision-ledger rows.
 - Do not close a ledger row with common practice or agent preference when it changes what is stored or delivered. Such a row closes only through an explicit user answer, an explicit `not applicable`, an authoritative contract or cited evidence that directly determines the answer, or, where the Decisions section allows it, a provisional choice marked "to confirm".
 - A row that changes only how the screen looks or behaves is `implementer-decided`: choose, state the choice in the issue, and do not ask. Apply the Decisions test literally; when unsure which side a row falls on, it is the user's.
-- Ask the ledger's core categories for every feature. Ask an optional category only when the PRD scope section lists it, or when this feature plainly needs it; in that case say so and suggest adding it to that section. Without coding guidance, treat every category as in scope.
+- Ask the ledger's core categories for every feature. Ask an optional category only when the PRD scope section lists it, or when this feature plainly needs it; in that case say so and suggest adding it to that section. The ledger reference says when a category belongs there. Without coding guidance, treat every category as in scope.
 - Apply the Boundary section to the failure rows: ask about invalid input and about broken data observed in the real data; do not turn environment failures into requirements unless the project records them as common.
 - If a repository contract determines a row, cite the path or command evidence in the ledger and ask the user only when product intent remains open.
 - If the user asks to skip a category, record it as explicitly out of scope or not applicable with the user's stated reason.
 - Do not create the issue while any applicable ledger row remains open. A `provisional` row is not open, but the issue lists it under "To confirm" with the choice taken and what overturning it would cost.
+- A row that waits for someone outside the conversation is filed as its own issue, shaped as the Decisions section says and labelled `needs-decision`. The PRD issue is published once nothing open blocks it: the point is settled, or the user moves the blocked part out of scope.
 - Follow the coding policy's verification approach. Under this collection's default, acceptance criteria require real-app, integration/end-to-end, failure-path, and persisted-state evidence; do not add unit-test requirements. Mark database checks not applicable only when the feature has no relevant persisted state.
 
 ## Workflow
@@ -75,7 +76,7 @@ Read `AGENTS.md`, coding guidance, and `GLOSSARY.md` when present. Four sections
 
 5. File the issue.
    - Outside Plan Mode, inspect available labels and required metadata, then create the issue when the ledger is complete.
-   - Add `--label "PRD"` only when the label exists or is explicitly required. Add other metadata only when explicitly requested or required by the repository.
+   - Add the `prd` workflow label only when it exists. Add other metadata only when explicitly requested or required by the repository.
    - Search for duplicates and an uncertain prior result before creating the issue. Use the tracker reference's body-file or structured-input approach for multiline Markdown.
    - Read back the created issue and verify project, title, body, and metadata. On an ambiguous write, reconcile existing issues before a bounded retry; do not blindly create another.
    - Report the created issue URL, title, target project, applied metadata, glossary changes, and any follow-up risk. Do not implement the published feature in this invocation.

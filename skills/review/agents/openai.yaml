@@ -3,4 +3,4 @@ interface:
   short_description: "Review requirements, standards, and evidence"
   default_prompt: "Use $review to inspect this change against its issue, coding standards, and verification evidence."
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

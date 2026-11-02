@@ -1,7 +1,6 @@
 ---
 name: pr
-description: Prepare and publish or update a GitHub PR or GitLab MR with issue references and existing verification evidence. Use only when explicitly requested.
-disable-model-invocation: true
+description: Publish or update a GitHub PR or GitLab MR for a finished, verified change, with issue references and its verification evidence. Use when an implemented change has been verified and is ready to publish, in unattended work as well as when a person asks.
 license: MIT
 metadata:
   source: "https://github.com/mattpocock/skills/tree/main/skills/engineering/pr"
@@ -17,7 +16,7 @@ Publish intended changes from the current checkout. Read `AGENTS.md`, coding gui
 - Inspect the full diff against the intended base and preserve unrelated staged, unstaged, and untracked work. Confirm that the target and branch are unambiguous before pushing. Follow the repo's branch convention; never silently create a fork or force-push.
 - Find an existing open PR/MR for the exact source repository/branch and target. Reuse it. A closed or merged prior result is not authorization to reopen or create another. Reconcile uncertain prior writes before creating anything.
 - Use evidence already produced during implementation and verification. Resolve the verified revision, dirty state, fixture, covered acceptance criteria, and actual screenshot/transcript/query artifacts. If subsequent changes invalidate it, require relevant verification before presenting the change as ready. Do not rerun checks merely to format publication text.
-- Commit only intended changes when needed, then push to the confirmed remote. No unrelated implementation, unit tests, merging, auto-merge, or unsolicited metadata changes belong to publication.
+- Commit only intended changes when needed, then push to the confirmed remote. No unrelated implementation, unit tests, merging, auto-merge, reviewer assignment, or unsolicited metadata changes belong to publication.
 
 ## Write
 
@@ -43,8 +42,8 @@ Use accessible, already published evidence URLs or the host's supported attachme
 
 ## Publish and verify
 
-Create or update the resolved PR/MR using structured arguments or a body file; preserve unrelated existing body content. Honor the user's requested draft state. When verification is incomplete, publish only if the user requested that incomplete state, label it accurately, and use a draft when supported; otherwise return the prepared body and the verification blocker.
+Create or update the resolved PR/MR using structured arguments or a body file; preserve unrelated existing body content. Honor the user's requested draft state. When verification is incomplete, publish only if the user requested that incomplete state, label it accurately, and use a draft when supported; otherwise return the prepared body and the verification blocker. Unattended work has no such request, so an incompletely verified change is not published.
 
 Read back the result and verify URL, host/project, head/base, title/body, issue references, and included evidence. After a timeout or ambiguous response, search for the matching result before retrying; retry once only after its absence and the failure cause establish a safe correction. Stop and report unresolved uncertainty rather than duplicating publication.
 
-Return the URL, branch/revision, coverage and evidence gaps. Attach the result when the current environment supports PR artifacts. End after publication; review is a separate invocation.
+Return the URL, branch/revision, coverage and evidence gaps. Attach the result when the current environment supports PR artifacts. End after publication. Review is the separate `review` skill; in unattended work, run it next without asking.

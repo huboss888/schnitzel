@@ -4,6 +4,15 @@
 
 Record the confirmed tracker provider, host, project, remote, and branch convention here during setup. Read issue requirements from that target; use its native CLI for issue and PR/MR operations. Ask when an issue number or target is ambiguous.
 
+Workflow labels. Setup creates the missing ones on the tracker; no other step creates labels. Rename one here, and the skills follow.
+
+| Label | Colour | Meaning |
+| --- | --- | --- |
+| `needs-decision` | `#FBCA04` | Waits for a decision someone outside the conversation must make (see Decisions). Unattended work skips it and every issue it blocks. |
+| `prd` | `#0E8A16` | An implementation-ready issue published by `write-prd`. |
+| `bug` | `#D73A4A` | A program defect, as the Boundary section defines it. User-environment and existing-data cases do not get it. |
+| `wontfix` | `#FFFFFF` | Decided not to do. Unattended work skips it. |
+
 ## Language
 
 Record the project's languages here during setup. The default:
@@ -32,22 +41,21 @@ Who settles an open point depends on whether it changes what is stored or delive
 - **Yes, and the owner has delegated it or a safe default exists.** Proceed on a stated provisional choice and mark it "to confirm" in the issue. It can be overturned later; say what overturning would cost.
 - **Yes, and nothing answers it.** Ask, and do not build on it until answered.
 
-A point that waits for someone outside the conversation is filed as an issue of its own, with the options, the evidence, what it blocks, and the choice taken meanwhile. It is not kept as a line in another document. Once settled, a decision that meets the ADR test becomes an ADR; any other stays in its closed issue.
+A point that waits for someone outside the conversation is filed as an issue of its own, with the options, the evidence, what it blocks, and the choice taken meanwhile, and labelled `needs-decision`. It is not kept as a line in another document. Once settled, a decision that meets the ADR test becomes an ADR; any other stays in its closed issue.
 
 ## PRD scope
 
-`write-prd` asks the core categories of its decision ledger for every feature. Its optional categories are asked only when listed here: Security, Privacy, and Compliance; Integrations; Feature Flag and Rollout; Operations; Observability; Scale and Concurrency.
-
-Optional categories that apply to this project: none.
-
-List a category when the project has what it is about (accounts or personal data, an external service, staged rollout, a server or worker to operate, metrics and alerts, concurrent users or heavy load). Add one as soon as there is a reason to; no feature has to have run into it first.
+Optional ledger categories that apply to this project: none.
 
 ## Implementation
 
 - Implement the issue's agreed scope. Record unresolved decisions instead of inventing requirements.
+- Unattended (no person in the conversation): take an open issue that is labelled neither `needs-decision` nor `wontfix` and that no open `needs-decision` issue blocks. Implement it, verify it, then publish and review it without asking. Never decide a point that a waiting issue holds.
 - Read `GLOSSARY.md` when present and use its terms. Maintain resolved terminology through `domain-modeling`; keep implementation details in the issue and code.
 - Write no comment that restates what the code does or narrates the change. Comment only where someone editing the line would otherwise undo it: a workaround or an outside constraint, in one line, linking the issue or ADR that holds the reasoning and what would let it be removed. Agents copy nearby comments, so delete stale or redundant ones in code you touch.
-- Preserve unrelated changes. Work serially in the current checkout unless the user requests another execution model.
+- Preserve unrelated changes. Work serially in the main checkout. Do not create git worktrees.
+- Scratch files (verification runs, evidence, walkthrough output, issue and PR/MR body files, temporary packages) go under `.scratch/` at the repository root, which `.gitignore` excludes. A person deletes it; there is no inventory or removal command.
+- A database or schema created for verification is named with the prefix `SCRATCH_` (or the engine's equivalent). Nothing writes to a database of any other name, except the verification skill's dev seed command, which rebuilds the dev instance it names.
 - Some rules are stated in one file of the code and nowhere else (generated limits, a layout table, a list of what goes where). Name those files here, one line each, with what they decide. Point to them; never restate their content in a document.
 
 ## Verification
@@ -55,16 +63,15 @@ List a category when the project has what it is about (accounts or personal data
 - Do not create or run unit tests. Preserve existing test files and CI configuration.
 - Prove acceptance criteria through the real app, using browser/Electron interaction, CLI execution, HTTP, and integration/end-to-end checks as appropriate.
 - Use existing lint, typecheck, and build checks where useful. Inspect aggregate commands before running them so they do not indirectly run unit tests.
-- Read the project-local verification skill for launch, database, fixtures, driving, evidence, and cleanup. Add or update relevant feature-map recipes as behavior changes.
+- Read the project-local verification skill for launch, database, fixtures, dev seed, driving, evidence, and cleanup. Add or update relevant feature-map recipes as behavior changes.
+- A feature is not done until the dev seed holds data that shows it, so a person can open their dev instance and walk through it. The seed grows with each feature.
 - Exercise affected existing flows and the failure cases the Boundary section makes the program's job: invalid input, and broken data observed in the real data. Confirm persisted side effects as well as visible results. Keep evidence tied to the verified revision and fixture.
 - Report passed, failed, blocked, and unverified acceptance criteria separately. A build or screenshot alone does not prove a complete flow.
 
 ## Publication and review
 
-- Include the issue link, verified scope, actual evidence, and remaining gaps in the PR/MR. Use closing references only for fully resolved issues.
-- Review requirements, repository standards, and evidence coverage. Missing unit tests are not a finding under this policy; missing real-behavior verification is.
-- Classify every review finding by the Boundary section before ranking it.
-- Review findings stay in chat unless the user requests posting. Publication does not authorize merging, auto-merge, or reviewer assignment.
+- Publish a finished, verified change with the `pr` skill; it holds the publication rules.
+- Review a published change with the `review` skill; it holds the review rules.
 
 ## Documentation
 

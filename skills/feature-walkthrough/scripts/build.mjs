@@ -3,7 +3,7 @@
 //   node build.mjs <outline.json> --html <out.html> [--docx <out.docx>]
 // The HTML is one file with its images inside (base64) with light and dark themes, so it can be hosted as it is.
 // --docx needs the `docx` npm package; when it cannot be found the script says how to install it
-// into a scratch folder (never into a project).
+// under .scratch/ (never into the project's dependencies).
 import { readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, extname, resolve } from 'node:path'
@@ -130,9 +130,9 @@ async function docx() {
   try {
     lib = createRequire(resolve(process.cwd(), 'noop.js'))('docx')
   } catch {
-    console.error('The `docx` package was not found. Install it into a scratch folder and run again from there:\n' +
-      '  mkdir <scratch>/docgen && cd <scratch>/docgen && npm init -y && npm install docx@9\n' +
-      '  cd <scratch>/docgen && node <skill>/scripts/build.mjs <outline.json> --docx <out.docx>')
+    console.error('The `docx` package was not found. Install it under .scratch/ and run again from there:\n' +
+      '  mkdir -p .scratch/docgen && cd .scratch/docgen && npm init -y && npm install docx@9\n' +
+      '  cd .scratch/docgen && node <skill>/scripts/build.mjs <outline.json> --docx <out.docx>')
     process.exit(3)
   }
   const { AlignmentType, BorderStyle, Document, HeadingLevel, ImageRun, LevelFormat, Packer, Paragraph, ShadingType, Table, TableCell, TableRow, TextRun, WidthType } = lib

@@ -39,7 +39,7 @@ Three sections of the template describe this project rather than the collection,
 - **Boundary:** who uses the program. The default is an internal tool for a small, known group of trained users, which leaves environment failures to the user and broken incoming data to its owner.
 - **Decisions:** which sources may answer an open point without asking: a specification, a production data snapshot, a legacy program, or none.
 
-**PRD scope** lists the optional decision-ledger categories that apply; the default is none, which fits an internal tool with no accounts, external services, staged rollout, or servers to operate. List one whenever the project evidently has what it covers, whether that is known at setup or learned later. When guidance, a glossary, or decisions already live in another repository, record that path in the Documentation section and do not create a local copy.
+**PRD scope** lists the optional decision-ledger categories that apply; the default is none. `write-prd`'s ledger says when a category belongs there. When guidance, a glossary, or decisions already live in another repository, record that path in the Documentation section and do not create a local copy.
 
 Add one compact managed block to `AGENTS.md`, updating it in place on repeat runs:
 
@@ -53,6 +53,12 @@ Add one compact managed block to `AGENTS.md`, updating it in place on repeat run
 
 Replace the verification pointer with the actual discovered skill path. If none exists, omit that line and mention `create-verification-skill` in the handoff. Respect an existing multi-context glossary layout; otherwise use one root glossary, created lazily by `domain-modeling`. Do not create empty glossary, ADR, harness, or feature-map files.
 
+Add `/.scratch/` to the project's `.gitignore` when no line already ignores it; the coding guidance sends scratch files there.
+
+## Create workflow labels
+
+The Tracker section of the coding guidance lists the workflow labels. Invoking setup authorizes creating them; this is the only step that creates labels. With a reachable tracker and write access, list the project's labels using the [tracker reference](references/tracker.md). Create each listed label that is missing, with its colour and a one-line description of its meaning written in the reading language. A label that already exists under the same name, in any letter case, is reused as it is: do not rename, recolour, or redescribe it, and record its exact spelling in the Tracker section. Read the list back afterwards. When the tracker is not reachable or writes are refused, name the missing labels in the handoff; repeat setup creates them later.
+
 ## Handoff
 
-Report tracker readiness and remaining blockers separately from local guidance completion. Name the guidance files changed and the next usable skill. The verification skill will own runtime/database instructions; do not add a duplicate `harness.md`. Installing skills alone does not install CLIs, authenticate accounts, provision databases, or enable browser tools.
+Report tracker readiness, the labels created or reused, and remaining blockers separately from local guidance completion. Name the guidance files changed and the next usable skill. The verification skill will own runtime/database instructions; do not add a duplicate `harness.md`. Installing skills alone does not install CLIs, authenticate accounts, provision databases, or enable browser tools.

@@ -93,12 +93,14 @@ Apply the Boundary section of the project's coding guidance before asking.
 - Tracker provider, host, and target repository/project, including GitLab subgroup paths when present.
 - Title format and repository-specific domain or area prefix, when required.
 - Duplicate issue search terms and result.
-- Available `PRD` label and whether it will be applied.
+- Available `prd` workflow label and whether it will be applied.
 - Other metadata explicitly requested by the user or required by the repository, with evidence.
 
 ## Optional Categories
 
-Asked only when the project's coding guidance lists the category under PRD scope, or when this feature plainly needs it.
+Asked only when the project's coding guidance lists the category under PRD scope, or when this feature plainly needs it. The default list is none.
+
+A category belongs on that list when the project has what it is about: accounts or personal data (Security, Privacy, and Compliance), an external service (Integrations), staged rollout (Feature Flag and Rollout), a server or worker to operate (Operations), metrics and alerts (Observability), concurrent users or heavy load (Scale and Concurrency). Add one as soon as there is a reason to; no feature has to have run into it first.
 
 ### Security, Privacy, and Compliance
 

@@ -6,8 +6,8 @@ verification skill has a harness that does this (helpers to open a form, find a 
 click, pump messages, log, and close stray dialogs), use it; that skill also says how to give it a
 scratch database. The examples below call such helpers as `Fld` (a control by name), `Pump` (let
 the form process messages for a while), `Say` (write a log line) and `AllControls`; use the
-harness's own names, or write the few you need. Write a one-off step script in the session's
-scratch folder, run it, and delete it afterwards.
+harness's own names, or write the few you need. Write a one-off step script under
+`.scratch/walkthroughs/` and run it.
 
 ## Drawing a form
 
@@ -42,8 +42,8 @@ What it does not draw:
   windows on the user's desktop and may wait for them. Stop before it; describe it from source.
 - Anything that **copies files** with `My.Computer.FileSystem.CopyFile(..., UIOption.AllDialogs)`:
   if the target exists from an earlier run, Windows shows its "Replace or Skip" dialog and the run
-  waits. Empty the target folder in the scratch data folder first.
-- Saving: only on scratch data, and only when the walkthrough is about saving.
+  waits. Empty the target folder under `.scratch/walkthroughs/` first.
+- Saving: only on scratch data; in decision mode, only when the walkthrough is about saving.
 
 ## Logging what the screen shows
 

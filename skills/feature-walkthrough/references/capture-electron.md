@@ -3,8 +3,8 @@
 Electron apps are driven with Playwright's Electron driver (`_electron.launch` from `playwright`,
 which returns the app; `app.firstWindow()` gives the page). When the project's verification skill
 has a launcher that starts the built app on a scratch database, use it; that skill also says how to
-make the database and build first. Write a one-off script in the session's scratch folder,
-importing the launcher by its path, and delete it afterwards.
+make the database and build first. Write a one-off script under `.scratch/walkthroughs/`,
+importing the launcher by its path.
 
 ## Taking the picture
 
@@ -36,5 +36,5 @@ Naive UI menus, unlike WinForms.
 
 ## Steps that must not run
 
-Run saving only on scratch data, and exports only into a scratch folder. Never let a step open a
+Run saving only on scratch data, and exports only into `.scratch/walkthroughs/`. Never let a step open a
 real dialog: an OS window the script cannot see makes the run hang.
