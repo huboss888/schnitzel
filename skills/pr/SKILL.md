@@ -1,6 +1,6 @@
 ---
 name: pr
-description: Publish or update a GitHub PR or GitLab MR for a finished, verified change, with issue references and its verification evidence. Use when an implemented change has been verified and is ready to publish, in unattended work as well as when a person asks.
+description: Publish or update a GitHub PR or GitLab MR with issue references and verification evidence. Use when a person asks, when an implemented change has been verified, or in a long-running run from the branch's first commit on, as a draft. A run is long-running when its prompt says so; a subagent follows the mode of the run that started it.
 license: MIT
 metadata:
   source: "https://github.com/mattpocock/skills/tree/main/skills/engineering/pr"
@@ -42,8 +42,10 @@ Use accessible, already published evidence URLs or the host's supported attachme
 
 ## Publish and verify
 
-Create or update the resolved PR/MR using structured arguments or a body file; preserve unrelated existing body content. Honor the user's requested draft state. When verification is incomplete, publish only if the user requested that incomplete state, label it accurately, and use a draft when supported; otherwise return the prepared body and the verification blocker. Unattended work has no such request, so an incompletely verified change is not published.
+Create or update the resolved PR/MR using structured arguments or a body file; preserve unrelated existing body content. Honor the user's requested draft state. When verification is incomplete, publish only if the user requested that incomplete state, label it accurately, and use a draft when supported; otherwise return the prepared body and the verification blocker.
+
+In a long-running run (a run is long-running when its prompt says so; a subagent follows the mode of the run that started it), open the PR/MR as a draft once the branch has its first commit. Its Evidence section carries the passed, failed, blocked, and unverified acceptance criteria; update it on each round of the run's implement, verify, review, and fix loop, all on this one PR/MR. Mark it ready only when verification is complete and the review is clean. At the round cap it stays a draft, with the remaining items listed. Comment on the issue only when work stops before any commit exists.
 
 Read back the result and verify URL, host/project, head/base, title/body, issue references, and included evidence. After a timeout or ambiguous response, search for the matching result before retrying; retry once only after its absence and the failure cause establish a safe correction. Stop and report unresolved uncertainty rather than duplicating publication.
 
-Return the URL, branch/revision, coverage and evidence gaps. Attach the result when the current environment supports PR artifacts. End after publication. Review is the separate `review` skill; in unattended work, run it next without asking.
+Return the URL, branch/revision, coverage and evidence gaps. Attach the result when the current environment supports PR artifacts. End after publication. Review is the separate `review` skill; in a long-running run, run it next without asking.

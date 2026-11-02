@@ -27,7 +27,7 @@ The generated skill names each and keeps them apart.
 - Name the dev instance the person opens day to day, with the evidence that it is not production: its host, file, or profile, and the configuration that selects it. When that cannot be established, the seed is blocked; never point it at an unconfirmed target.
 - One command rebuilds it with data covering every module, so a person can open the program and walk through any feature. It runs the actual migrations, then writes the data. It may write the database directly, because it is not proof.
 - It is idempotent: a full rebuild, so running it twice gives the same state. Never append to whatever is there.
-- An agent writes to the dev instance only through this command. The same command, given a `SCRATCH_` target, builds a proof run's starting state.
+- It runs on the dev instance only when a person runs it or asks for it, and nothing else writes there. When a change extends the seed, prove it on a `SCRATCH_` instance and give the person the command that rebuilds their dev instance. The same command, given a `SCRATCH_` target, builds a proof run's starting state.
 - The seed grows with each feature: when a feature lands, add the data that shows it. A journey whose precondition the seed lacks fails and names what is missing.
 - A verifier's transaction does not undo writes from the application's separate connection. Choose explicit fixture cleanup, disposal of owned storage, or another proven isolation boundary. Document foreign-key order and background workers when they affect teardown.
 

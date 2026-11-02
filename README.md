@@ -2,6 +2,8 @@
 
 A personal collection of skills for a serial, issue-driven workflow on one machine: project setup, product decisions, implementation, verification, publication, and review. A person invokes them, except `pr` and `review`, which an agent also runs itself.
 
+Some upstream sources orchestrate many agents in parallel. This collection takes a smaller step: a person decides, then one agent runs long on a named list of issues, serially, on one machine, in one main checkout, within a limited token budget. Upstream changes are adopted when they fit those constraints.
+
 Framework and library guidance belongs in the consuming project. Install React, Nuxt UI, and other technology skills directly from their official maintainers rather than copying them into this collection.
 
 ## Install
@@ -36,8 +38,10 @@ The installer handles your selected agents' skill locations. CLI authentication,
 
 ## Operating model
 
-- **Daytime, a person decides.** `write-prd` stays explicit-only and publishes an issue only once no open decision blocks it. A point that waits for someone is filed as its own issue, labelled `needs-decision`. `setup-project` creates the four workflow labels (`needs-decision`, `prd`, `bug`, `wontfix`) that the generated `docs/agents/coding.md` lists under Tracker.
-- **Unattended work, for example overnight.** The agent picks an open issue that no waiting issue blocks, implements it, verifies it, and publishes and reviews it without asking. This is why `pr` and `review` are agent-invocable; the generated coding guidance carries the rule, because every run reads it.
+- **A person decides.** `write-prd` stays explicit-only and publishes a `prd` issue only once no open decision blocks it. A point that waits for someone is filed as its own `needs-decision` issue. `setup-project` creates the four workflow labels (`needs-decision`, `prd`, `bug`, `wontfix`) that the generated `docs/agents/coding.md` lists under Tracker.
+- **A person hands over a list.** For example, "implement #1 #2 #3 in order, long-running". A run is long-running when its prompt says so; a subagent follows the mode of the run that started it. No agent picks issues by itself.
+- **One agent runs long.** It works each named issue on one draft PR/MR without a person: implement, verify, review, fix, for at most 2 review rounds. Then the PR/MR is marked ready, or left as a draft listing what remains. An issue that a `needs-decision` issue blocks is skipped with a comment. This is why `pr` and `review` are agent-invocable. The generated coding guidance holds the loop, because every run reads it.
+- **A person reviews, merges, and closes the issue.**
 
 ## Expected workflow
 
@@ -48,26 +52,32 @@ Install all skills globally
           |
        write-prd ----> domain-modeling ----> local glossary          person decides
           |
-          |-- point waits for someone --> its own issue, labelled needs-decision
+          |-- point waits for someone --> its own needs-decision issue
           |
-     Published issue, nothing blocks it
+     prd issues, nothing blocks them
+          |
+  Person: "implement #1 #2 #3 in order, long-running"
           |
  - - - - -|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          |                                                          unattended
-  Agent picks an open issue no waiting issue blocks
+          |                                                     long-running run
+  For each named issue, in order:
+          |-- blocked by needs-decision: comment, skip
+          |-- earlier branch or PR/MR: continue on it
           |
-  Implement, then run the project's verify-* skill
+  Implement; run the project's verify-* skill
           |-- missing: create-verification-skill (person)
           |-- stale:   maintain-verification-skill (person)
-          |-- extend the dev seed with the feature
+          |-- seed extended: prove on SCRATCH_, hand over rebuild command
           |
-          pr                            Agent publishes PR/MR with evidence
+          pr                            Draft PR/MR from the first commit
           |
-        review                          Agent reviews; posts findings when unattended
+        review  <---- fix, re-verify, pr        at most 2 rounds
+          |
+  Ready when verified and clean; else draft listing what remains
           |
  - - - - -|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           |
-  Person reviews and merges; walks through it on the dev seed
+  Person rebuilds dev instance from the seed, reviews, merges, closes issue
           |
         retro                           Optional
 ```
@@ -97,18 +107,18 @@ The defaults assume an internal program with a small, known group of trained use
 | --- | --- | --- |
 | Language | Traditional Chinese for what people read (issues, PR/MR, reviews, glossary, ADRs); English for what agents and tools read. | every skill that writes |
 | Boundary | A failure is a program defect, a user-environment case, or broken existing data. Only the first is a requirement, a verification target, or a review finding by default. | `write-prd`, the verification skills, `review`, `pr` |
-| Decisions | A point that changes nothing stored or delivered is the implementer's. One that does is answered by a contract, by evidence, by a provisional choice the owner has delegated, or by the user. A point that waits is its own labelled issue. | `write-prd`, unattended work |
+| Decisions | A point that changes nothing stored or delivered is the implementer's. One that does is answered by a contract, by evidence, by a provisional choice the owner has delegated, or by the user. A point that waits is its own labelled issue. | `write-prd`, long-running runs |
 | PRD scope | No optional decision-ledger categories. | `write-prd` |
 
 ## Under evaluation
 
-Open questions. Each gives what would settle it and the evidence so far.
+These are the candidate next steps toward less human involvement. Each names the constraint it would relax and the evidence that would justify it.
 
-- [ ] **Drop `GLOSSARY.md` and `domain-modeling`.** Against keeping them: one more document to maintain, and pstack works without one. For keeping them: they map reading-language terms to code names, which matters when people read one language and the code uses another. Settled by whether agents and people actually read it. In the retro sample, explicit reads appeared in 9 of 206 transcripts, against 24 commits that changed it.
-- [ ] **A fresh implementer subagent per issue for the unattended loop** (mattpocock implement-spec; see also software-factory, in progress). It conflicts with "serial". Settled by whether unattended runs lose track across issues in one context. Evidence so far: in the retro sample, implementer subagents already published MRs themselves.
-- [ ] **Dev seed: always replayed, or a snapshot** used as a cache of the replay and refused when it is older than the schema or the seed script. Settled by how long the replay takes as the seed grows. No evidence yet; the dev seed is new.
-- [ ] **A usability reviewer:** a fresh agent given the dev seed and the screens, without the code, asked to do a task. Getting lost becomes a finding, without a human in the loop. Settled by whether its findings match what people stumble on. No evidence yet; in the retro sample, people could not walk through features at all, because their dev instance was nearly empty.
-- [ ] **Human review policy** (none, tiered, every), as a setting in `coding.md`. Settled by how often unattended changes that a person reviewed needed correction. No evidence yet.
+- [ ] **Drop `GLOSSARY.md` and `domain-modeling`.** Relaxes: the token budget, by one less document to read and maintain. Against keeping them: pstack works without one. For keeping them: they map reading-language terms to code names, which matters when people read one language and the code uses another. Justified if agents and people do not actually read it. In the retro sample, explicit reads appeared in 9 of 206 transcripts, against 24 commits that changed it.
+- [ ] **A fresh implementer subagent per issue in a long-running run** (mattpocock implement-spec; see also software-factory, in progress). Relaxes: one serial context and the token budget. Justified if long runs lose track across issues in one context. Evidence so far: in the retro sample, implementer subagents already published MRs themselves.
+- [ ] **Dev seed: always replayed, or a snapshot** used as a cache of the replay and refused when it is older than the schema or the seed script. Relaxes: the token budget and run time spent on replay. Justified if the replay grows slow enough to matter. No evidence yet; the dev seed is new.
+- [ ] **A usability reviewer:** a fresh agent given the dev seed and the screens, without the code, asked to do a task. Getting lost becomes a finding. Relaxes: a person walking through each feature. Justified if its findings match what people stumble on. No evidence yet; in the retro sample, people could not walk through features at all, because their dev instance was nearly empty.
+- [ ] **Human review policy** (none, tiered, every), as a setting in `coding.md`. Relaxes: a person reviews and merges every change. Justified by how rarely long-running changes that a person reviewed needed correction. No evidence yet.
 
 ## Install dependencies together
 
@@ -146,7 +156,7 @@ disable-model-invocation: true
 
 Write a concrete workflow body before adding the skill to the catalog. Add `references/`, `scripts/`, or `assets/` only when that workflow needs them, and use relative references within the skill. Avoid machine-specific paths and undeclared dependencies on other personal skills.
 
-A new workflow is explicit-only unless it is a step an unattended agent must run itself, as `pr` and `review` are ([AGENTS.md](AGENTS.md) holds the rule). Alongside `disable-model-invocation: true` in the frontmatter, include `agents/openai.yaml`:
+A new workflow is explicit-only unless it is a step that a long-running run must invoke itself, as `pr` and `review` are ([AGENTS.md](AGENTS.md) holds the rule). Alongside `disable-model-invocation: true` in the frontmatter, include `agents/openai.yaml`:
 
 ```yaml
 policy:

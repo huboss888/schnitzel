@@ -8,10 +8,10 @@ Workflow labels. Setup creates the missing ones on the tracker; no other step cr
 
 | Label | Colour | Meaning |
 | --- | --- | --- |
-| `needs-decision` | `#FBCA04` | Waits for a decision someone outside the conversation must make (see Decisions). Unattended work skips it and every issue it blocks. |
+| `needs-decision` | `#FBCA04` | Waits for a decision someone outside the conversation must make (see Decisions). A long-running run skips every issue it blocks. |
 | `prd` | `#0E8A16` | An implementation-ready issue published by `write-prd`. |
 | `bug` | `#D73A4A` | A program defect, as the Boundary section defines it. User-environment and existing-data cases do not get it. |
-| `wontfix` | `#FFFFFF` | Decided not to do. Unattended work skips it. |
+| `wontfix` | `#FFFFFF` | Decided not to do. |
 
 ## Language
 
@@ -50,13 +50,26 @@ Optional ledger categories that apply to this project: none.
 ## Implementation
 
 - Implement the issue's agreed scope. Record unresolved decisions instead of inventing requirements.
-- Unattended (no person in the conversation): take an open issue that is labelled neither `needs-decision` nor `wontfix` and that no open `needs-decision` issue blocks. Implement it, verify it, then publish and review it without asking. Never decide a point that a waiting issue holds.
-- Read `GLOSSARY.md` when present and use its terms. Maintain resolved terminology through `domain-modeling`; keep implementation details in the issue and code.
+- Read `GLOSSARY.md` when present and use its terms. When a change introduces or clarifies a domain term, add it to `GLOSSARY.md` in the same change, in the format `domain-modeling` describes (its `GLOSSARY-FORMAT.md`). Keep implementation details in the issue and code.
 - Write no comment that restates what the code does or narrates the change. Comment only where someone editing the line would otherwise undo it: a workaround or an outside constraint, in one line, linking the issue or ADR that holds the reasoning and what would let it be removed. Agents copy nearby comments, so delete stale or redundant ones in code you touch.
 - Preserve unrelated changes. Work serially in the main checkout. Do not create git worktrees.
 - Scratch files (verification runs, evidence, walkthrough output, issue and PR/MR body files, temporary packages) go under `.scratch/` at the repository root, which `.gitignore` excludes. A person deletes it; there is no inventory or removal command.
 - A database or schema created for verification is named with the prefix `SCRATCH_` (or the engine's equivalent). Nothing writes to a database of any other name, except the verification skill's dev seed command, which rebuilds the dev instance it names.
+- The dev seed runs on the person's dev instance only when a person runs it or asks for it. When a change extends the seed, prove it on a `SCRATCH_` instance and give the person the command that rebuilds their dev instance.
 - Some rules are stated in one file of the code and nowhere else (generated limits, a layout table, a list of what goes where). Name those files here, one line each, with what they decide. Point to them; never restate their content in a document.
+
+### Long-running runs
+
+A run is long-running when its prompt says so; a subagent follows the mode of the run that started it. A person hands over the list, for example "implement #1 #2 #3 in order, long-running". No agent picks issues by itself.
+
+Work the issues the prompt names, in the given order, one at a time. For each:
+
+1. If the issue carries `needs-decision`, or an open `needs-decision` issue blocks it, skip it: comment on the issue naming the blocker, and go on to the next. Never decide the waiting point.
+2. If a branch or an open PR/MR from an earlier run exists for it, continue on that branch and that PR/MR instead of starting another.
+3. Implement and verify, publishing with `pr` from the first commit on. Then review with `review`.
+4. Fix the review's program-defect findings, as the Boundary section classifies them, on the same branch; re-verify, update the PR/MR with `pr`, and review the new head, for at most 2 review rounds in all. The loop ends when verification is complete and the review is clean, or at the cap; `pr` says how the PR/MR records either outcome.
+
+A person reviews, merges, and closes the issue.
 
 ## Verification
 

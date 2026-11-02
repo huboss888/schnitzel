@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a finished change (a branch, GitHub PR, or GitLab MR) against its issue, coding standards, and real-app verification evidence. Use after a change is published, in unattended work as well as when a person asks; report in chat unless posting is requested or no person is in the conversation.
+description: Review a change (a branch, GitHub PR, or GitLab MR) against its issue, coding standards, and real-app verification evidence. Use when a person asks, or after each publication in a long-running run. A run is long-running when its prompt says so; a subagent follows the mode of the run that started it. Reports in chat, or on the PR/MR in a long-running run.
 license: MIT
 metadata:
   source: "https://github.com/mattpocock/skills/tree/main/skills/engineering/code-review"
@@ -39,4 +39,4 @@ Having reproduced a case shows that it exists; it does not move it to another ki
 
 Return prioritized findings in chat. Each finding names the trigger, effect, code location, requirement or standard, and supporting evidence. Deduplicate by root cause, distinguish confirmed defects from coverage gaps, and omit speculative or purely cosmetic preferences. After the findings, list what was noticed and not raised, one line each, under the two headings "user environment" and "existing data", so the reader can see it was considered. Summarize coverage and unverified areas even when there are no actionable findings; no findings is not proof of correctness.
 
-Post only when explicitly requested, or in unattended work, where no person reads the chat: then post the report as one comment on the PR/MR. Use the selected host's supported review/comment operation. Keep findings anchored to the pinned revision, recheck the head before posting, and refresh the affected review if it changed. Reconcile uncertain submission outcomes before a bounded retry. Report the posted URL when available without changing approval state.
+A review a person invokes reports in chat and posts only when explicitly requested. In a long-running run (a run is long-running when its prompt says so; a subagent follows the mode of the run that started it), post the report as one comment on the PR/MR; the run's implementer, not this review, fixes the findings, as the coding guidance's long-running loop says. Use the selected host's supported review/comment operation. Keep findings anchored to the pinned revision, recheck the head before posting, and refresh the affected review if it changed. Reconcile uncertain submission outcomes before a bounded retry. Report the posted URL when available without changing approval state.
