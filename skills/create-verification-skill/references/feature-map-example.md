@@ -5,13 +5,14 @@ Illustrative shape for a fictional Notes app. Use this format with the target pr
 ```markdown
 # Notes feature map
 
-Read SKILL.md for launch, database identity, fixtures, dev seed, evidence, and cleanup. The issue owns change requirements; this map records reusable behavior checks.
+Read SKILL.md for launch, database identity, fixtures, evidence, and cleanup. The issue owns change requirements; this map records reusable behavior checks.
 
 ## Baseline preconditions
 
-- A fresh SCRATCH_notes_<run-id> profile, launched and passing control-notes doctor.
-- The dev seed applied to it: account seed-user with notes titled Quarterly plan and Grocery list.
-- A recipe whose precondition the seed lacks reports a failure and names what is missing under its gotcha; extend the seed rather than weakening the recipe.
+- A fresh SCRATCH_notes_<run-id> profile, launched and passing control-notes doctor. Never the person's dev profile.
+- The harness fixtures loaded into it with control-notes fixtures load: account fixture-user with notes titled Quarterly plan and Grocery list.
+- A recipe names the fixture rows it relies on, or discovers its data with a query before choosing it on the screen.
+- A recipe whose precondition the fixtures lack reports a failure and names what is missing under its gotcha; extend the fixtures rather than weakening the recipe.
 
 ## Create a note
 
@@ -25,7 +26,7 @@ Read SKILL.md for launch, database identity, fixtures, dev seed, evidence, and c
 ## Search notes
 
 - Entry points: Search button; keyboard / outside editable controls; notes search CLI.
-- Preconditions: baseline; the seeded notes give a title match (Quarterly plan) and a body match.
+- Preconditions: baseline; the fixture notes give a title match (Quarterly plan) and a body match.
 - Drive: query by title, then body; open a result; try an absent term; clear the query. Run the matching and missing queries through the CLI when those paths are in scope.
 - Proof: expected IDs appear, missing queries show an empty state, clearing restores the list, reopening shows the stored values. A before/after query confirms the run's notes and ownership were not changed by search. Capture the action and result for each claimed entry point.
 - Gotcha: wait for the result/empty predicate within the harness timeout. A browser result does not prove a CLI path that was skipped.

@@ -45,10 +45,11 @@ the same picture every run. How depends on what the program is; read the matchin
 For any of them:
 
 - **Use scratch data.** Start the program the way its project's verification skill says, on an
-  isolated `SCRATCH_` instance. A repo's `AGENTS.md` and verification skill own how to launch it
-  and apply the dev seed; follow them, do not restate them here. In usage mode, start from the
-  dev seed, so the screens match what the reader sees in their own dev instance; if the project
-  has no dev seed, say so in the walkthrough.
+  isolated `SCRATCH_` instance with the verification fixtures. A repo's `AGENTS.md` and
+  verification skill own how to launch it and load them; follow them, do not restate them here.
+  In usage mode, when those fixtures lack data for the feature, build it there by driving the
+  project's own harness scripts or the app's screens, and say so in the walkthrough. Never write
+  to the person's dev instance.
 - **Which steps run.** In decision mode, stop before a step that writes data or opens another
   program (saving, exporting, starting Excel, sending, printing): picture the screen just before
   it, and describe the step from the code, marked as read from source. In usage mode, run and
@@ -57,7 +58,7 @@ For any of them:
   an external service) is described from source. In both modes, follow the capture reference for
   a step that would open another program's window: the run cannot close it.
 - **Prerequisites from elsewhere.** In usage mode, state a prerequisite that belongs to another
-  module or program in one line ("apply the dev seed", or the feature it depends on), not as a
+  module or program in one line (the data it needs, or the feature it depends on), not as a
   walk through the whole chain.
 - **One picture per step the reader needs**, at the moment the step's effect is visible: the
   screen as it opens, after the choices that change it, all filled in. Skip intermediate states

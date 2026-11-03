@@ -9,26 +9,19 @@ Use for fullstack, Electron, and other stateful apps. Put the discovered project
 - Resolve credentials from existing local configuration or environment-variable names without printing their values. Never copy connection strings, tokens, production data, or sensitive raw query output into tracked docs or evidence.
 - Use read-only database access for inspection. When an isolated local verification target is not established, do not run migrations, seeds, deletes, or application mutations against an unknown/shared target. Record the blocker and prepare the isolated instance/profile needed for proof.
 
-## Three kinds of state
+## Two kinds of state
 
 The generated skill names each and keeps them apart.
 
-- **Proof:** a fresh, disposable instance per run, prepared as below. It may start from the dev seed.
+- **Proof:** a fresh, disposable instance per run, prepared as below from the harness's own fixtures.
 - **Evidence:** the record of a run, kept after cleanup under `.scratch/`.
-- **Dev seed:** the person's dev instance, rebuilt by one command (see below). No proof runs there.
+
+The person's dev instance is neither. Verification never writes to it.
 
 ## Prepare an isolated run
 
 - Use a disposable database, schema, tenant, container volume, or Electron profile consistent with the app's existing development conventions. Name a database or schema the run creates with the prefix `SCRATCH_` (or the engine's equivalent, such as a `SCRATCH_` file name or profile folder under `.scratch/`), and write to no database of another name. Record the run ID and fixture identifiers so setup and cleanup can target only that run.
-- Apply the actual migrations and seed commands only to that confirmed isolated target. Direct DB writes may prepare fixtures, not implement the feature being proved. Never run a reset or broad delete against an existing user database; the dev seed's rebuild of its named dev instance is the one exception.
-
-## Dev seed
-
-- Name the dev instance the person opens day to day, with the evidence that it is not production: its host, file, or profile, and the configuration that selects it. When that cannot be established, the seed is blocked; never point it at an unconfirmed target.
-- One command rebuilds it with data covering every module, so a person can open the program and walk through any feature. It runs the actual migrations, then writes the data. It may write the database directly, because it is not proof.
-- It is idempotent: a full rebuild, so running it twice gives the same state. Never append to whatever is there.
-- It runs on the dev instance only when a person runs it or asks for it, and nothing else writes there. When a change extends the seed, prove it on a `SCRATCH_` instance and give the person the command that rebuilds their dev instance. The same command, given a `SCRATCH_` target, builds a proof run's starting state.
-- The seed grows with each feature: when a feature lands, add the data that shows it. A journey whose precondition the seed lacks fails and names what is missing.
+- Apply the actual migrations and seed commands only to that confirmed isolated target. Direct DB writes may prepare fixtures, not implement the feature being proved. Never run a reset or broad delete against an existing user database.
 - A verifier's transaction does not undo writes from the application's separate connection. Choose explicit fixture cleanup, disposal of owned storage, or another proven isolation boundary. Document foreign-key order and background workers when they affect teardown.
 
 ## Prove a feature

@@ -29,8 +29,8 @@ The installer handles your selected agents' skill locations. CLI authentication,
 | [setup-project](skills/setup-project/SKILL.md) | Check tracker access and establish project coding guidance. | Adapted from [Matt's setup](https://github.com/mattpocock/skills/tree/main/skills/engineering/setup-matt-pocock-skills) |
 | [write-prd](skills/write-prd/SKILL.md) | Resolve decisions, update local terms, and publish a GitHub/GitLab issue. | Adapted from [kdy1](https://github.com/kdy1/kdy1-scripts/tree/main/skills/write-prd) |
 | [domain-modeling](skills/domain-modeling/SKILL.md) | Maintain a concise domain glossary and selective ADRs. | Adapted from [Matt Pocock](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling) |
-| [create-verification-skill](skills/create-verification-skill/SKILL.md) | Generate and prove an app/database harness, a dev seed, and a compact feature map. | Adapted from [poteto/pstack](https://github.com/cursor/plugins/tree/main/pstack/skills/create-verification-skill) |
-| [maintain-verification-skill](skills/maintain-verification-skill/SKILL.md) | Audit harness, dev seed, and feature-map drift against source and live behavior. | Adapted from [poteto/pstack](https://github.com/cursor/plugins/tree/main/pstack/skills/maintain-verification-skill) |
+| [create-verification-skill](skills/create-verification-skill/SKILL.md) | Generate and prove an app/database harness and a compact feature map. | Adapted from [poteto/pstack](https://github.com/cursor/plugins/tree/main/pstack/skills/create-verification-skill) |
+| [maintain-verification-skill](skills/maintain-verification-skill/SKILL.md) | Audit harness and feature-map drift against source and live behavior. | Adapted from [poteto/pstack](https://github.com/cursor/plugins/tree/main/pstack/skills/maintain-verification-skill) |
 | [pr](skills/pr/SKILL.md) | Publish or update a PR/MR with issue references and real evidence. Agent-invocable. | Adapted from [Matt's pr](https://github.com/mattpocock/skills/tree/main/skills/engineering/pr) |
 | [review](skills/review/SKILL.md) | Review requirements, standards, and verification evidence. Agent-invocable. | Adapted from [Matt's code-review](https://github.com/mattpocock/skills/tree/main/skills/engineering/code-review) |
 | [retro](skills/retro/SKILL.md) | Suggest improvements to the agent's working environment. | Adapted from [Matt Pocock](https://github.com/mattpocock/skills) |
@@ -67,7 +67,7 @@ Install all skills globally
   Implement; run the project's verify-* skill
           |-- missing: create-verification-skill (person)
           |-- stale:   maintain-verification-skill (person)
-          |-- seed extended: prove on SCRATCH_, hand over rebuild command
+          |-- proof on a fresh SCRATCH_ instance from the harness fixtures
           |
           pr                            Draft PR/MR from the first commit
           |
@@ -77,14 +77,14 @@ Install all skills globally
           |
  - - - - -|- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           |
-  Person rebuilds dev instance from the seed, reviews, merges, closes issue
+  Person reviews, merges, closes issue
           |
         retro                           Optional
 ```
 
 Run setup once per project, and again when its tracker or policy changes. Its Node helper checks the selected `gh`/`glab`, authentication, and repository-read access; missing tools or login are explicit prerequisites. Successful reads do not establish write permissions.
 
-The generated coding guidance's defaults: no unit tests are created or run; acceptance, affected existing flows, and relevant failure paths are proven through the real app, integration/end-to-end checks, and persisted-state assertions, with existing lint, typecheck, and build checks still useful. Work is serial in the main checkout, with no git worktrees. Scratch files go under an ignored `.scratch/` at the repository root, and verification databases carry the `SCRATCH_` prefix. A feature is done only when the dev seed shows it. Generating a harness and proving one feature is not proof of an entire implementation.
+The generated coding guidance's defaults: no unit tests are created or run; acceptance, affected existing flows, and relevant failure paths are proven through the real app, integration/end-to-end checks, and persisted-state assertions, with existing lint, typecheck, and build checks still useful. Work is serial in the main checkout, with no git worktrees. Scratch files go under an ignored `.scratch/` at the repository root, and verification databases carry the `SCRATCH_` prefix; the person's dev instance is never written unasked. Generating a harness and proving one feature is not proof of an entire implementation.
 
 ## Thin project documentation
 
@@ -94,10 +94,10 @@ The generated coding guidance's defaults: no unit tests are created or run; acce
 | `docs/agents/coding.md` | Tracker, language, boundary, who decides what, implementation, verification, where each document lives, and one-line pointers to `pr`, `review`, and the PRD scope setting. |
 | `GLOSSARY.md` | Resolved domain terminology, created only when needed. Written for people, in the project's reading language, each term with the name the code uses. |
 | `docs/adr/` | The few decisions that are hard to reverse, surprising, and the result of a real trade-off. |
-| Project-local `verify-<app>/SKILL.md` | Launch, database identity, fixtures, the dev seed, driving tools, evidence, and cleanup. |
+| Project-local `verify-<app>/SKILL.md` | Launch, database identity, fixtures, driving tools, evidence, and cleanup. |
 | Its `feature-map.md` | Baseline preconditions and compact recipes for critical and changed user flows. Split only when cumbersome. |
 
-The issue owns change requirements. The glossary defines terms. The feature map explains how to exercise behavior. Common setup stays in the verification entrypoint; there is no duplicate `harness.md`. The verification skill keeps three kinds of state apart: a disposable proof instance per run, evidence kept after cleanup, and the dev seed, the one command that rebuilds the person's dev instance.
+The issue owns change requirements. The glossary defines terms. The feature map explains how to exercise behavior. Common setup stays in the verification entrypoint; there is no duplicate `harness.md`. The verification skill keeps two kinds of state apart: a disposable `SCRATCH_` proof instance per run, built from the harness's own fixtures, and evidence kept after cleanup.
 
 ## Built for internal tools
 
@@ -116,8 +116,14 @@ These are the candidate next steps toward less human involvement. Each names the
 
 - [ ] **Drop `GLOSSARY.md` and `domain-modeling`.** Relaxes: the token budget, by one less document to read and maintain. Against keeping them: pstack works without one. For keeping them: they map reading-language terms to code names, which matters when people read one language and the code uses another. Justified if agents and people do not actually read it. In the retro sample, explicit reads appeared in 9 of 206 transcripts, against 24 commits that changed it.
 - [ ] **A fresh implementer subagent per issue in a long-running run** (mattpocock implement-spec; see also software-factory, in progress). Relaxes: one serial context and the token budget. Justified if long runs lose track across issues in one context. Evidence so far: in the retro sample, implementer subagents already published MRs themselves.
-- [ ] **Dev seed: always replayed, or a snapshot** used as a cache of the replay and refused when it is older than the schema or the seed script. Relaxes: the token budget and run time spent on replay. Justified if the replay grows slow enough to matter. No evidence yet; the dev seed is new.
-- [ ] **A usability reviewer:** a fresh agent given the dev seed and the screens, without the code, asked to do a task. Getting lost becomes a finding. Relaxes: a person walking through each feature. Justified if its findings match what people stumble on. No evidence yet; in the retro sample, people could not walk through features at all, because their dev instance was nearly empty.
+- [ ] **How a person's dev instance gets browsable data.** In the retro sample, people could not walk through features because their dev instance was nearly empty. Tying a seed to verification made every issue maintain a second data script and proved nothing about correctness, so it was removed. The candidate is a seed skill that only a person invokes. Open points, each with the constraint it would relax:
+  - How it finds the dev database and proves it is not production. Relaxes: the dev instance is never written by an agent, once a person asks.
+  - Whether it writes data itself or restores a snapshot the project provides. Writing relaxes the token budget, since the agent builds the data; restoring keeps the agent to a copy of what the project supplies.
+  - Whether it may apply migrations. Relaxes: the project owns its schema changes. Never in a project whose schema it does not own.
+  - How its script keeps up with new features. Updating it in every issue relaxes the token budget of each run; rerunning the skill when a person asks keeps that decision with the person.
+
+  Justified when people report again that there is nothing to browse.
+- [ ] **A usability reviewer:** a fresh agent given realistic data on a `SCRATCH_` instance and the screens, without the code, asked to do a task. Getting lost becomes a finding. Relaxes: a person walking through each feature. Justified if its findings match what people stumble on. No evidence yet; in the retro sample, people could not walk through features at all, because their dev instance was nearly empty.
 - [ ] **Human review policy** (none, tiered, every), as a setting in `coding.md`. Relaxes: a person reviews and merges every change. Justified by how rarely long-running changes that a person reviewed needed correction. No evidence yet.
 
 ## Install dependencies together
